@@ -40,7 +40,7 @@
     <!-- /.container-fluid -->
 </nav>
 <div class="container">
-    <div class="col-md-12">
+    <div class="col-md-12" style="margin-bottom: 30px">
         <h1>Административная панель </h1>
 
         <h4>Добавление заявки</h4>
@@ -58,8 +58,20 @@
                 <input id="menu_name" type="date" name="date" class="form-control field">
             </div>
             <div class="form-group">
-                <label for="service">Услуга</label><br>
-                <input id="service" type="text" name="service" class="form-control field">
+                <label for="email">Электронный адрес</label><br>
+                <input id="email" type="text" name="email" class="form-control field">
+            </div>
+            <div class="form-group">
+                <label for="phone">Номер телефона</label><br>
+                <input id="phone" type="text" name="phone" class="form-control field">
+            </div>
+            <div class="form-group">
+                <label for="customer">Услуга</label>
+                <select class="form-control" id="customer" name="service">
+                    {{#each services}}
+                        <option value="{{{this.id}}}">{{{this.name_service}}}</option>
+                    {{/each}}
+                </select>
             </div>
             <input type="submit" value="Отправить" class="btn btn-primary">
             <a href="/admin" class="btn btn-info">К списку записей</a>

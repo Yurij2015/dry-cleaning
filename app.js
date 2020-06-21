@@ -37,15 +37,54 @@ app.get("/orders", function (req, res) {
 
 // возвращаем форму для добавления данных
 app.get("/create", function (req, res) {
-    res.render("create.hbs");
+    pool.query("SELECT * FROM service", function (err, data) {
+        if (err) return console.log(err);
+        res.render("create.hbs", {
+            services: data
+        });
+    });
 });
+
+// возвращаем форму для добавления данных для клиента
+app.get("/contact", function (req, res) {
+    pool.query("SELECT * FROM service", function (err, data) {
+        if (err) return console.log(err);
+        res.render("contact.hbs", {
+            services: data
+        });
+    });
+});
+
+// получаем отправленные данные и добавляем их в БД
+app.post("/contact", urlencodedParser, function (req, res) {
+
+    if (!req.body) return res.sendStatus(400);
+    const customer_name = req.body.customer_name;
+    const content = req.body.content;
+    const date = req.body.date;
+    const service = req.body.service;
+    const email = req.body.email;
+    const phone = req.body.phone;
+
+    pool.query("INSERT INTO orders (customer_name, content, date, service, email, phone) VALUES (?,?,?,?,?,?)", [customer_name, content, date, service, email, phone], function (err, data) {
+        if (err) return console.log(err);
+        res.redirect("/contact");
+    });
+});
+
+
 // получаем отправленные данные и добавляем их в БД
 app.post("/create", urlencodedParser, function (req, res) {
 
     if (!req.body) return res.sendStatus(400);
-    const menu_name = req.body.menu_name;
+    const customer_name = req.body.customer_name;
     const content = req.body.content;
-    pool.query("INSERT INTO orders (menu_name, content) VALUES (?,?)", [menu_name, content], function (err, data) {
+    const date = req.body.date;
+    const service = req.body.service;
+    const email = req.body.email;
+    const phone = req.body.phone;
+
+    pool.query("INSERT INTO orders (customer_name, content, date, service, email, phone) VALUES (?,?,?,?,?,?)", [customer_name, content, date, service, email, phone], function (err, data) {
         if (err) return console.log(err);
         res.redirect("/admin");
     });
@@ -65,11 +104,15 @@ app.get("/edit/:id", function (req, res) {
 app.post("/edit", urlencodedParser, function (req, res) {
 
     if (!req.body) return res.sendStatus(400);
-    const menu_name = req.body.menu_name;
+    const customer_name = req.body.customer_name;
     const content = req.body.content;
+    const date = req.body.date;
+    const service = req.body.service;
+    const email = req.body.email;
+    const phone = req.body.phone;
     const id = req.body.id;
 
-    pool.query("UPDATE orders SET menu_name=?, content=? WHERE id=?", [menu_name, content, id], function (err, data) {
+    pool.query("UPDATE orders SET customer_name=?, content=?, date=?, service=?, email=?, phone=? WHERE id=?", [customer_name, content, date, service, email, phone, id], function (err, data) {
         if (err) return console.log(err);
         res.redirect("/admin");
     });

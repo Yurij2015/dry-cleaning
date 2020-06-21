@@ -34,18 +34,21 @@
         <table class="table table-hover">
             <tr>
                 <th>ФИО клиента</th>
-                <th>Номер телефона клиента</th>
                 <th>Условия (пожелания)</th>
-                <th>Дата</th>
+                <th class="col-md-2">Дата</th>
                 <th>Услуга</th>
+                <th>Электронная почта</th>
+                <th>Номер телефона клиента</th>
+                <th></th>
             </tr>
             {{#each pages}}
                 <tr>
-                    <td>{{this.menu_name}}</td>
+                    <td>{{this.customer_name}}</td>
                     <td>{{{this.content}}}</td>
-                    <td>{{{this.date}}}</td>
-                    <td>{{{this.customer}}}</td>
+                    <td>{{this.date}}</td>
                     <td>{{{this.service}}}</td>
+                    <td>{{{this.email}}}</td>
+                    <td>{{{this.phone}}}</td>
                     <td>
                         <a href="/edit/{{this.id}}" class="btn btn-sm btn-info">Edit</a>|
                         <form action="delete/{{this.id}}" method="POST" style="display:inline;">
