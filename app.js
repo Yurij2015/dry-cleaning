@@ -93,12 +93,35 @@ app.post("/create", urlencodedParser, function (req, res) {
 // получем id редактируемого пользователя, получаем его из бд и отправлям с формой редактирования
 app.get("/edit/:id", function (req, res) {
     const id = req.params.id;
-    pool.query("SELECT * FROM orders WHERE id=?", [id], function (err, data) {
+    pool.getConnection(function (err, conn) {
         if (err) return console.log(err);
-        res.render("edit.hbs", {
-            pages: data[0]
+        conn.query("SELECT * FROM orders WHERE id=?", [id], function (err, data) {
+            if (err) return console.log(err);
+            conn.query('SELECT * FROM service', function (err, services) {
+                if (err) throw err;
+                conn.release();
+                res.render("edit.hbs", {
+                    orders: data[0],
+                    services: services
+                });
+            });
         });
     });
+
+    // pool.query("SELECT * FROM orders WHERE id=?", [id], function (err, data) {
+    //     if (err) return console.log(err);
+    //     res.render("edit.hbs", {
+    //         orders: data[0]
+    //     });
+    // });
+
+    // pool.query("SELECT * FROM service", function (err, data) {
+    //     if (err) return console.log(err);
+    //     res.render("edit.hbs", {
+    //         services: data
+    //     });
+    // });
+
 });
 // получаем отредактированные данные и отправляем их в БД
 app.post("/edit", urlencodedParser, function (req, res) {

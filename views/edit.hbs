@@ -40,19 +40,40 @@
     <!-- /.container-fluid -->
 </nav>
 <div class="container">
-    <div class="col-md-12">
+    <div class="col-md-12" style="margin-bottom: 30px;">
         <h1> Административная панель </h1>
 
         <h3>Редактирование записи</h3>
         <form action="/edit" method="POST">
-            <input type="hidden" name="id" value="{{pages.id}}"/>
+            <input type="hidden" name="id" value="{{orders.id}}"/>
             <div class="form-group">
-                <label for="menu_name">Название</label><br>
-                <input id="menu_name" name="menu_name" value="{{pages.menu_name}}" class="form-control field">
+                <label for="menu_name">ФИО клиента</label><br>
+                <input id="menu_name" name="customer_name" class="form-control field" value="{{orders.customer_name}}">
             </div>
             <div class="form-group">
-                <label for="basic">Содержание</label><br>
-                <textarea id="basic" name="content" class="form-control field">{{pages.content}}</textarea><br><br>
+                <label for="basic">Условия (пожелания) </label><br>
+                <textarea id="basic" name="content" class="form-control field">{{orders.content}}</textarea><br><br>
+            </div>
+            <div class="form-group">
+                <label for="date">Дата. Сохраненная дата - {{orders.date}}</label><br>
+                <input id="menu_name" type="date" name="date" class="form-control field" >
+            </div>
+            <div class="form-group">
+                <label for="email">Электронный адрес</label><br>
+                <input id="email" type="text" name="email" class="form-control field" value="{{orders.email}}">
+            </div>
+            <div class="form-group">
+                <label for="phone">Номер телефона</label><br>
+                <input id="phone" type="text" name="phone" class="form-control field" value="{{orders.phone}}">
+            </div>
+            <div class="form-group">
+                <label for="customer">Услуга</label>
+                <select class="form-control" id="customer" name="service">
+                    <option value="{{orders.service}}">{{orders.service}}</option>
+                    {{#each services}}
+                        <option value="{{{this.id}}}">{{{this.name_service}}}</option>
+                    {{/each}}
+                </select>
             </div>
             <input type="submit" value="Отправить" class="btn btn-primary">
             <a href="/admin" class="btn btn-info">К списку записей</a>
